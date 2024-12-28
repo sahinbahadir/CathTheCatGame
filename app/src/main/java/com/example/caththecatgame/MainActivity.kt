@@ -1,7 +1,7 @@
 package com.example.caththecatgame
 
 import android.content.DialogInterface
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,12 +10,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.caththecatgame.databinding.ActivityMainBinding
+import com.example.caththecatgame.managers.ScoreManager
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var scoreManager: ScoreManager
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPref: SharedPreferences
     private var runnable: Runnable = Runnable{}
     private var runnableImagePosition: Runnable = Runnable{}
     private var handler: Handler = Handler(Looper.getMainLooper())
@@ -30,13 +31,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.catView.isClickable = false
         binding.catView.visibility = View.INVISIBLE
-        sharedPref = this.getSharedPreferences("com.example.catchthecatgame", MODE_PRIVATE)
-
+        scoreManager = ScoreManager(this)
     }
 
     fun goToScoreboardAct(view : View){
-//        val intent = Intent().setClass(this@MainActivity, ScoreboardActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent().setClass(this@MainActivity, ScoreboardActivity::class.java)
+        startActivity(intent)
     }
 
     fun startCatGame(view: View){
@@ -57,9 +57,7 @@ class MainActivity : AppCompatActivity() {
                     handler.removeCallbacks(runnable)
                     handler.removeCallbacks(runnableImagePosition)
 
-                    if (sharedPref.getInt("bestScore", 0) < score){
-                        sharedPref.edit().putInt("bestScore", score).apply()
-                    }
+                    scoreManager.addScoreIfNeeded(newScore = score)
 
                     binding.catView.isClickable = false
                     binding.catView.visibility = View.INVISIBLE
