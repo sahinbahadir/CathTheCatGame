@@ -3,11 +3,7 @@ package com.example.caththecatgame
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.caththecatgame.databinding.ActivityScoreboardBinding
 
 class ScoreboardActivity : AppCompatActivity() {
